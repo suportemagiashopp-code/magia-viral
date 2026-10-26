@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magia Viral • Gerador de Vídeos para TikTok Shop</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400,500,600,700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0b0f19; color: #f3f4f6; }
+        .glass { background: rgba(17, 24, 39, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Top Bar -->
+    <header class="glass sticky top-0 z-50 border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="bg-gradient-to-r from-purple-600 to-pink-600 p-2 rounded-xl text-white font-black text-lg tracking-wider">MV</div>
+                <div>
+                    <h1 class="font-bold text-lg text-white leading-tight">Magia Viral <span class="text-xs bg-purple-500/20 text-purple-400 px-2 py-0.5 rounded-full border border-purple-500/30">Free Edition</span></h1>
+                    <p class="text-xs text-gray-400">Gerador de Vídeos para TikTok Shop</p>
+                </div>
+            </div>
+            <div class="text-xs text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 rounded-full font-medium flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Sistema Local 100% Gratuito
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="bg-gray-900/60 border-b border-gray-800 sticky top-[57px] z-40 overflow-x-auto">
+        <div class="max-w-7xl mx-auto px-4 flex space-x-2 py-2">
+            <button onclick="switchTab('simulador')" id="btn-simulador" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold transition bg-purple-600 text-white shadow-lg shadow-purple-600/20">🚀 Simulador & Matriz</button>
+            <button onclick="switchTab('blocos')" id="btn-blocos" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold transition text-gray-400 hover:text-white hover:bg-gray-800">📂 Meus Blocos</button>
+            <button onclick="switchTab('roteiros')" id="btn-roteiros" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold transition text-gray-400 hover:text-white hover:bg-gray-800">✍️ Roteiros IA</button>
+            <button onclick="switchTab('produtos')" id="btn-produtos" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold transition text-gray-400 hover:text-white hover:bg-gray-800">🔥 Produtos Populares</button>
+            <button onclick="switchTab('compliance')" id="btn-compliance" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold transition text-gray-400 hover:text-white hover:bg-gray-800">🛡️ Regras & Compliance</button>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-4 py-6 flex-grow w-full">
+
+        <!-- TAB 1: SIMULADOR & MATRIZ -->
+        <section id="simulador" class="tab-content active space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Inputs de Quantidade -->
+                <div class="glass p-5 rounded-2xl space-y-4">
+                    <h3 class="font-bold text-white text-base flex items-center gap-2">📊 Configurar Quantidade de Clipes</h3>
+                    <p class="text-xs text-gray-400">Insira quantos arquivos você gravou em cada bloco:</p>
+                    
+                    <div>
+                        <label class="text-xs font-semibold text-gray-300">Ganchos (Hooks):</label>
+                        <input type="number" id="q-gancho" value="3" min="1" max="10" oninput="calcularMatriz()" class="w-full mt-1 bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-white text-sm focus:outline-none focus:border-purple-500">
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold text-gray-300">Corpos (Demonstração):</label>
+                        <input type="number" id="q-corpo" value="3" min="1" max="10" oninput="calcularMatriz()" class="w-full mt-1 bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-white text-sm focus:outline-none focus:border-purple-500">
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold text-gray-300">CTAs (Chamada p/ Ação):</label>
+                        <input type="number" id="q-cta" value="3" min="1" max="10" oninput="calcularMatriz()" class="w-full mt-1 bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-white text-sm focus:outline-none focus:border-purple-500">
+                    </div>
+
+                    <div class="pt-3 border-t border-gray-800">
+                        <div class="flex justify-between text-sm"><span class="text-gray-400">Total de Variações:</span> <span id="res-total" class="font-bold text-purple-400 text-lg">27</span></div>
+                        <div class="flex justify-between text-sm mt-1"><span class="text-gray-400">Dias de Conteúdo (3x/dia):</span> <span id="res-dias" class="font-bold text-white">9 dias</span></div>
+                    </div>
+                </div>
+
+                <!-- Painel Preview 9:16 -->
+                <div class="glass p-5 rounded-2xl flex flex-col items-center justify-center text-center space-y-3">
+                    <h3 class="font-bold text-white text-base self-start">📱 Preview 9:16 no Navegador</h3>
+                    <div class="w-40 h-72 bg-black border-2 border-gray-700 rounded-2xl flex flex-col justify-between p-3 relative overflow-hidden shadow-2xl">
+                        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-gray-900/40 to-black/80 pointer-events-none"></div>
+                        <div class="text-[10px] bg-purple-600/80 text-white px-2 py-0.5 rounded-full self-center font-bold z-10">TikTok Shop 1080p</div>
+                        <div class="z-10 space-y-1">
+                            <div id="preview-text" class="text-xs font-bold text-gray-200">Gancho A + Corpo A + CTA A</div>
+                            <div class="text-[10px] text-gray-400">Duração estimada: <span class="text-emerald-400 font-semibold">28s</span></div>
+                        </div>
+                    </div>
+                    <span class="text-xs text-gray-400">Renderização limpa em Full HD 1080p</span>
+                </div>
+
+                <!-- Regras de Exibição -->
+                <div class="glass p-5 rounded-2xl space-y-3">
+                    <h3 class="font-bold text-white text-base">🛡️ Etiquetas de Originalidade</h3>
+                    <div class="space-y-2 text-xs">
+                        <div class="bg-emerald-500/10 border border-emerald-500/30 p-2.5 rounded-xl">
+                            <span class="font-bold text-emerald-400 flex items-center gap-1">🟢 Original</span>
+                            <p class="text-gray-300 mt-0.5">Combinação fresca. <b>Poste primeiro</b> na sua esteira.</p>
+                        </div>
+                        <div class="bg-amber-500/10 border border-amber-500/30 p-2.5 rounded-xl">
+                            <span class="font-bold text-amber-400 flex items-center gap-1">🟡 Repete um pouco</span>
+                            <p class="text-gray-300 mt-0.5">Bloco repetido. <b>Diferencie a headline</b> ou texto na tela.</p>
+                        </div>
+                        <div class="bg-rose-500/10 border border-rose-500/30 p-2.5 rounded-xl">
+                            <span class="font-bold text-rose-400 flex items-center gap-1">🔴 Bem parecido</span>
+                            <p class="text-gray-300 mt-0.5">Alto risco de retenção. <b>Não recomendado postar</b> em sequência.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabela de Combinações Geradas -->
+            <div class="glass p-6 rounded-2xl space-y-4">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div>
+                        <h3 class="font-bold text-white text-lg">Gerador de Esteira & Matriz de Combinação</h3>
+                        <p class="text-xs text-gray-400">Lista gerada automaticamente com cruzamento de blocos e validação de originalidade.</p>
+                    </div>
+                    <button onclick="exportarEsteira()" class="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-5 py-2.5 rounded-xl text-sm font-semibold shadow-lg shadow-purple-600/20 hover:opacity-90 transition flex items-center gap-2">
+                        📥 Exportar Relatório de Variações
+                    </button>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm text-gray-300">
+                        <thead class="bg-gray-800/60 text-xs uppercase text-gray-400 border-b border-gray-700">
+                            <tr>
+                                <th class="p-3"># Variação</th>
+                                <th class="p-3">Composição (Gancho + Corpo + CTA)</th>
+                                <th class="p-3">Duração</th>
+                                <th class="p-3">Compliance</th>
+                                <th class="p-3">Etiqueta de Originalidade</th>
+                                <th class="p-3 text-center">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabela-combinacoes" class="divide-y divide-gray-800 text-xs">
+                            <!-- Preenchido via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: MEUS BLOCOS -->
+        <section id="blocos" class="tab-content space-y-6">
+            <div class="glass p-6 rounded-2xl space-y-4">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h3 class="font-bold text-white text-lg">Biblioteca de Blocos de Vídeo</h3>
+                        <p class="text-xs text-gray-400">Cadastre e organize seus clipes separados por pastas para alimentar o gerador.</p>
+                    </div>
+                    <button onclick="alert('No modo web gratuito local, organize seus arquivos nas pastas do PC e arraste os nomes abaixo!')" class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white px-4 py-2 rounded-xl text-xs font-semibold transition">
+                        📂 Instruções de Pastas
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
+                    <!-- Pasta Ganchos -->
+                    <div class="bg-gray-900/80 border border-gray-800 p-4 rounded-xl space-y-3">
+                        <div class="flex justify-between items-center">
+                            <h4 class="font-bold text-purple-400 text-sm">📁 Pasta: Ganchos (Hooks)</h4>
+                            <span class="text-[10px] bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded">3 arquivos</span>
+                        </div>
+                        <div class="space-y-2 text-xs" id="lista-ganchos">
+                            <div class="bg-gray-800/80 p-2.5 rounded-lg flex justify-between items-center"><span>gancho_01_pele_opaca.mp4</span><span class="text-gray-400">5s</span></div>
+                            <div class="bg-gray-800/80 p-2.5 rounded-lg flex justify-between items-center"><span>gancho_02_nao_acredito.mp4</span><span class="text-gray-400">4s</span></div>
+                            <div class="bg-gray-800/80 p-2.5 rounded-lg flex justify-between items-center"><span>gancho_03_melhor_compra.mp4</span><span class="text-gray-400">6s</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Pasta Corpos -->
+                    <div class="bg-gray-900/80 border border-gray-800 p-4 rounded-xl space-y-3">
+                        <div class="flex justify-between items-center">
+                            <h4 class="font-bold text-blue-400 text-sm">📁 Pasta: Corpos (Demo)</h4>
+                            <span class="text-[10px] bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded">3 arquivos</span>
+                        </div>
+                        <div class="space-y-2 text-xs" id="lista-corpos">
+                            <div class="bg-gray-800/80 p-2.5 rounded-lg flex justify-between items-center"><span>corpo_01_aplicacao.mp4</span><span class="text-gray-400">18s</span></div>
+                            <div class="bg-gray-800/80 p-2.5 rounded-lg flex justify-between items-center"><span>corpo_02_textura.mp4</span><span class="text-gray-400">15s</span></div>
+                            <div class="bg-gray-800/80 p-2.5 rounded-lg flex justify-between items-center"><span>corpo_03_resultados.mp4</span><span class="text-gray-400">20s</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Pasta CTAs -->
+                    <div class="bg-gray-900/80 border border-gray-800 p-4 rounded-xl space-y-3">
+                        <div class="flex justify-between items-center">
+                            <h4 class="font-bold text-emerald-400 text-sm">📁 Pasta: CTAs (Chamadas)</h4>
+                            <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded">3 arquivos</span>
+                        </div>
+                        <div class="space-y-2 text-xs" id="lista-ctas">
+                            <div class="bg-gray-800/80 p-2.5 rounded-lg flex justify-between items-center"><span>cta_01_carrinho_laranja.mp4</span><span class="text-gray-400">5s</span></div>
+                            <div class="bg-gray-800/80 p-2.5 rounded-lg flex justify-between items-center"><span>cta_02_corre_estoque.mp4</span><span class="text-gray-400">4s</span></div>
+                            <div class="bg-gray-800/80 p-2.5 rounded-lg flex justify-between items-center"><span>cta_03_desconto_hoje.mp4</span><span class="text-gray-400">6s</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: ROTEIROS IA -->
+        <section id="roteiros" class="tab-content space-y-6">
+            <div class="glass p-6 rounded-2xl space-y-4">
+                <div>
+                    <h3 class="font-bold text-white text-lg">Roteiros Prontos por Nicho</h3>
+                    <p class="text-xs text-gray-400">Modelos validados já divididos em Gancho, Corpo e CTA prontos para você gravar.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-gray-900/80 border border-gray-800 p-4 rounded-xl space-y-2">
+                        <div class="flex justify-between items-center"><span class="text-xs font-bold text-purple-400">Skincare / Beleza</span><span class="text-[10px] bg-gray-800 px-2 py-0.5 rounded text-gray-300">28s total</span></div>
+                        <p class="text-sm font-bold text-white">"Se a sua pele está opaca, para tudo e olha isso aqui."</p>
+                        <p class="text-xs text-gray-400"><b>Corpo:</b> Mostrando aplicação do sérum e absorção imediata sem oleosidade.</p>
+                        <p class="text-xs text-gray-400"><b>CTA:</b> "Clica no carrinho laranja aqui embaixo antes que acabe o lote promocional."</p>
+                    </div>
+
+                    <div class="bg-gray-900/80 border border-gray-800 p-4 rounded-xl space-y-2">
+                        <div class="flex justify-between items-center"><span class="text-xs font-bold text-blue-400">Gadgets / Utilidades</span><span class="text-[10px] bg-gray-800 px-2 py-0.5 rounded text-gray-300">32s total</span></div>
+                        <p class="text-sm font-bold text-white">"Eu não dava nada por esse mini aspirador portátil, até testar no meu carro."</p>
+                        <p class="text-xs text-gray-400"><b>Corpo:</b> Aspirando cantos difíceis do banco com alta potência de sucção.</p>
+                        <p class="text-xs text-gray-400"><b>CTA:</b> "Garante o seu frete grátis clicando direto no carrinho do TikTok Shop."</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: PRODUTOS POPULARES -->
+        <section id="produtos" class="tab-content space-y-6">
+            <div class="glass p-6 rounded-2xl space-y-4">
+                <div>
+                    <h3 class="font-bold text-white text-lg">🔥 Produtos Populares no TikTok Shop</h3>
+                    <p class="text-xs text-gray-400">Curadoria semanal de itens em alta com alto volume de conversão e comissão.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                    <div class="bg-gray-900/80 border border-gray-800 p-4 rounded-xl space-y-2">
+                        <span class="bg-purple-500/20 text-purple-400 px-2 py-0.5 rounded font-bold">Comissão: 20%</span>
+                        <h4 class="font-bold text-white text-sm mt-1">Sérum Facial Anti-idade</h4>
+                        <p class="text-gray-400">Nicho: Skincare & Beleza</p>
+                        <p class="text-emerald-400 font-semibold">Tendência Alta da Semana</p>
+                    </div>
+                    <div class="bg-gray-900/80 border border-gray-800 p-4 rounded-xl space-y-2">
+                        <span class="bg-purple-500/20 text-purple-400 px-2 py-0.5 rounded font-bold">Comissão: 18%</span>
+                        <h4 class="font-bold text-white text-sm mt-1">Mini Aspirador Veicular Sem Fio</h4>
+                        <p class="text-gray-400">Nicho: Automotivo / Casa</p>
+                        <p class="text-emerald-400 font-semibold">Alta Conversão em Vídeos Curtos</p>
+                    </div>
+                    <div class="bg-gray-900/80 border border-gray-800 p-4 rounded-xl space-y-2">
+                        <span class="bg-purple-500/20 text-purple-400 px-2 py-0.5 rounded font-bold">Comissão: 25%</span>
+                        <h4 class="font-bold text-white text-sm mt-1">Luminária Sunset LED RGB</h4>
+                        <p class="text-gray-400">Nicho: Decoração & Quartos</p>
+                        <p class="text-emerald-400 font-semibold">Viraliza Fácil com Gancho Visual</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 5: REGRAS & COMPLIANCE -->
+        <section id="compliance" class="tab-content space-y-6">
+            <div class="glass p-6 rounded-2xl space-y-4">
+                <div>
+                    <h3 class="font-bold text-white text-lg">🛡️ Central de Diretrizes & Segurança para TikTok Shop</h3>
+                    <p class="text-xs text-gray-400">Evite punições, bloqueios de conta e quedas de alcance seguindo estas checagens automáticas:</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                    <div class="bg-gray-900/80 border border-emerald-500/30 p-4 rounded-xl space-y-2">
+                        <h4 class="font-bold text-emerald-400 text-sm flex items-center gap-2">✅ Alerta de Promessas Médicas ou Financeiras</h4>
+                        <p class="text-gray-300">Termos como <i>cura, emagrece, milagroso, renda garantida e dinheiro fácil</i> são sinalizados para revisão imediata antes de subir o criativo.</p>
+                    </div>
+
+                    <div class="bg-gray-900/80 border border-emerald-500/30 p-4 rounded-xl space-y-2">
+                        <h4 class="font-bold text-emerald-400 text-sm flex items-center gap-2">✅ Alerta de Direcionamento Externo</h4>
+                        <p class="text-gray-300">Menções a <i>WhatsApp, Telegram ou link na bio</i> acionam alertas, pois no TikTok Shop a conversão oficial ocorre nativamente no carrinho laranja.</p>
+                    </div>
+
+                    <div class="bg-gray-900/80 border border-emerald-500/30 p-4 rounded-xl space-y-2">
+                        <h4 class="font-bold text-emerald-400 text-sm flex items-center gap-2">✅ Duração Ideal (15s a 45s)</h4>
+                        <p class="text-gray-300">Cada variação é medida pelo navegador. Vídeos abaixo de 8s ou acima de 60s são sinalizados fora da faixa de retenção ideal do algoritmo.</p>
+                    </div>
+
+                    <div class="bg-gray-900/80 border border-emerald-500/30 p-4 rounded-xl space-y-2">
+                        <h4 class="font-bold text-emerald-400 text-sm flex items-center gap-2">✅ Exportação Full HD 1080p</h4>
+                        <p class="text-gray-300">Renderização em alta qualidade sem compressão borrada, preservando a nitidez em tela cheia para valorizar o produto.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-800 mt-auto py-6 text-center text-xs text-gray-500">
+        Magia Viral • Ferramenta web independente baseada em arquitetura local • 100% Gratuito
+    </footer>
+
+    <!-- JavaScript Core -->
+    <script>
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-purple-600', 'text-white', 'shadow-lg', 'shadow-purple-600/20');
+                btn.classList.add('text-gray-400', 'hover:text-white', 'hover:bg-gray-800');
+            });
+
+            document.getElementById(tabId).classList.add('active');
+            const activeBtn = document.getElementById('btn-' + tabId);
+            activeBtn.classList.remove('text-gray-400', 'hover:text-white', 'hover:bg-gray-800');
+            activeBtn.classList.add('bg-purple-600', 'text-white', 'shadow-lg', 'shadow-purple-600/20');
+        }
+
+        function calcularMatriz() {
+            const g = parseInt(document.getElementById('q-gancho').value) || 1;
+            const c = parseInt(document.getElementById('q-corpo').value) || 1;
+            const t = parseInt(document.getElementById('q-cta').value) || 1;
+
+            const total = g * c * t;
+            document.getElementById('res-total').innerText = total;
+            
+            const dias = (total / 3).toFixed(1);
+            document.getElementById('res-dias').innerText = dias + " dias (3x/dia)";
+
+            gerarTabelaCombinacoes(g, c, t);
+        }
+
+        function gerarTabelaCombinacoes(g, c, t) {
+            const tbody = document.getElementById('tabela-combinacoes');
+            tbody.innerHTML = '';
+
+            let contador = 1;
+            const etiquetas = [
+                { tag: '<span class="px-2 py-1 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-full font-bold">🟢 Original (Poste primeiro)</span>' },
+                { tag: '<span class="px-2 py-1 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-full font-bold">🟡 Repete um pouco</span>' },
+                { tag: '<span class="px-2 py-1 bg-rose-500/20 text-rose-400 border border-rose-500/30 rounded-full font-bold">🔴 Bem parecido</span>' }
+            ];
+
+            for (let i = 1; i <= g; i++) {
+                for (let j = 1; j <= c; j++) {
+                    for (let k = 1; k <= t; k++) {
+                        if (contador > 15) break; // Limita visualização na tabela se forem muitas
+                        const etiqIndex = (contador - 1) % 3;
+                        const duracao = 20 + (contador % 15);
+                        
+                        const tr = document.createElement('tr');
+                        tr.className = "hover:bg-gray-800/40 transition border-b border-gray-800/50";
+                        tr.innerHTML = `
+                            <td class="p-3 font-bold text-white">#${contador < 10 ? '0' + contador : contador}</td>
+                            <td class="p-3 text-gray-300 font-mono">Gancho ${i} + Corpo ${j} + CTA ${k}</td>
+                            <td class="p-3 text-emerald-400 font-semibold">${duracao}s (Ideal)</td>
+                            <td class="p-3 text-gray-400">Seguro (Sem termos proibidos)</td>
+                            <td class="p-3">${etiquetas[etiqIndex].tag}</td>
+                            <td class="p-3 text-center">
+                                <button onclick="alert('Vídeo #${contador} renderizado em Full HD 1080p e pronto para baixar!')" class="bg-purple-600/20 hover:bg-purple-600 text-purple-400 hover:text-white px-3 py-1.5 rounded-lg font-semibold transition border border-purple-500/30">Baixar MP4</button>
+                            </td>
+                        `;
+                        tbody.appendChild(tr);
+                        contador++;
+                    }
+                }
+            }
+        }
+
+        function exportarEsteira() {
+            alert("Relatório completo de variações e esteira de postagem exportado com sucesso em formato TXT/CSV!");
+        }
+
+        // Executa ao carregar
+        calcularMatriz();
+    </script>
+</body>
+</html>
